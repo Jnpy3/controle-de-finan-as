@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle Financeiro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    try { document.documentElement.dataset.theme = localStorage.getItem("tema") || "dark"; } catch (e) {}
+  </script>
+</head>
+<body>
+  <!-- Ícones (não aparecem na tela, só ficam guardados aqui) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+   <defs>
+  <linearGradient id="grad-moeda" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#fde68a"/>
+    <stop offset="45%" stop-color="#f5b82e"/>
+    <stop offset="100%" stop-color="#b45309"/>
+  </linearGradient>
+</defs>
+<symbol id="icone-moeda" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="46" fill="url(#grad-moeda)" stroke="#b45309" stroke-width="2"/>
+  <circle cx="50" cy="50" r="38" fill="none" stroke="#78350f" stroke-opacity="0.35" stroke-width="3"/>
+  <g transform="rotate(14 50 50) translate(-4 0)" fill="none" stroke="#78350f" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="7" d="M40 31 H56 a9.5 9.5 0 0 1 0 19 H40 M40 50 H59 a10 10 0 0 1 0 20 H40 M40 28 V73"/>
+    <path stroke-width="4.5" d="M47 21 V28 M55 21 V28 M47 73 V80 M55 73 V80"/>
+  </g>
+</symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7H5a2 2 0 0 1 0-4h13v4z"/><path d="M3 5v14a2 2 0 0 0 2 2h15V7"/><path d="M16 14h.01"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v6M14 11v6"/></symbol>
+  </svg>
+
+  <div class="app">
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+      <div class="marca">
+        <span class="logo" aria-hidden="true">
+          <span class="moeda">
+            <svg class="face"><use href="#icone-moeda"/></svg>
+            <svg class="face verso"><use href="#icone-moeda"/></svg>
+          </span>
+        </span>
+        <div>
+          <strong>Controle Financeiro</strong>
+          <small>Controle. Guarde. Cresça.</small>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <a href="#visao" class="ativo"><svg class="ico"><use href="#i-home"/></svg>Visão geral</a>
+        <a href="#categorias"><svg class="ico"><use href="#i-pie"/></svg>Categorias</a>
+        <a href="#orcamentos"><svg class="ico"><use href="#i-target"/></svg>Orçamentos</a>
+        <a href="#movimentacoes"><svg class="ico"><use href="#i-list"/></svg>Movimentações</a>
+      </nav>
+
+      <div class="promo">
+        <svg class="promo-moeda"><use href="#icone-moeda"/></svg>
+        <h3>Assuma o controle do seu dinheiro</h3>
+        <p>Registre receitas e despesas e acompanhe suas metas.</p>
+        <button type="button" class="btn primario" id="btn-nova-lateral">+ Nova movimentação</button>
+      </div>
+
+      <div class="tema">
+        <svg class="ico"><use href="#i-sun"/></svg>
+        <button class="switch" id="tema-switch" type="button" role="switch" aria-label="Alternar modo claro e escuro"></button>
+        <svg class="ico"><use href="#i-moon"/></svg>
+        <span id="tema-nome">Escuro</span>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO -->
+    <main class="conteudo">
+      <header class="topo">
+        <div>
+          <h1 id="saudacao">Olá!</h1>
+          <p>Veja como estão suas finanças neste período.</p>
+        </div>
+        <div class="topo-acoes">
+          <input type="month" id="mes" aria-label="Mês">
+          <button type="button" class="btn primario" id="btn-nova">+ Nova movimentação</button>
+        </div>
+      </header>
+
+      <!-- CARDS -->
+      <section id="visao" class="kpis">
+        <div class="card kpi roxo">
+          <div class="kpi-topo">
+            <span class="icone"><svg class="ico"><use href="#i-down"/></svg></span>
+            <span class="rotulo">Total de despesas</span>
+          </div>
+          <strong id="total-despesas">R$ 0,00</strong>
+          <small id="var-despesas" class="variacao"></small>
+          <svg class="spark" id="spark-despesas" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+        </div>
+
+        <div class="card kpi verde">
+          <div class="kpi-topo">
+            <span class="icone"><svg class="ico"><use href="#i-up"/></svg></span>
+            <span class="rotulo">Total de receitas</span>
+          </div>
+          <strong id="total-receitas">R$ 0,00</strong>
+          <small id="var-receitas" class="variacao"></small>
+          <svg class="spark" id="spark-receitas" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+        </div>
+
+        <div class="card kpi laranja">
+          <div class="kpi-topo">
+            <span class="icone"><svg class="ico"><use href="#i-pie"/></svg></span>
+            <span class="rotulo">Saldo do período</span>
+          </div>
+          <strong id="total-saldo">R$ 0,00</strong>
+          <small id="var-saldo" class="variacao"></small>
+          <svg class="spark" id="spark-saldo" viewBox="0 0 120 36" preserveAspectRatio="none"></svg>
+        </div>
+
+        <div class="card kpi azul">
+          <div class="kpi-topo">
+            <span class="icone"><svg class="ico"><use href="#i-wallet"/></svg></span>
+            <span class="rotulo">Orçamento usado</span>
+          </div>
+          <strong id="orc-pct">—</strong>
+          <div class="barra"><div class="barra-fill" id="orc-barra"></div></div>
+          <small id="orc-detalhe" class="variacao neutra"></small>
+        </div>
+      </section>
+
+      <!-- GRÁFICOS -->
+      <section class="grade-2">
+        <article class="painel" id="categorias">
+          <div class="painel-topo"><h2>Despesas por categoria</h2></div>
+          <div class="donut-area">
+            <div class="donut-wrap">
+              <svg id="donut" viewBox="0 0 200 200"></svg>
+              <div class="donut-centro">
+                <strong id="donut-total">R$ 0,00</strong>
+                <span>Total</span>
+              </div>
+            </div>
+            <ul id="legenda" class="legenda"></ul>
+          </div>
+          <div class="destaque" id="top-categoria"></div>
+        </article>
+
+        <article class="painel">
+          <div class="painel-topo"><h2>Evolução das despesas</h2></div>
+          <svg id="tendencia" viewBox="0 0 400 240"></svg>
+          <div class="destaque" id="comparativo"></div>
+        </article>
+      </section>
+
+      <!-- ORÇAMENTOS -->
+      <section class="painel" id="orcamentos">
+        <div class="painel-topo">
+          <h2>Orçamentos por categoria</h2>
+          <small class="suave">Clique em ⋮ para definir a meta mensal</small>
+        </div>
+        <div class="grade-orc" id="grade-orcamentos"></div>
+      </section>
+
+      <!-- MOVIMENTAÇÕES -->
+      <section class="painel" id="movimentacoes">
+        <div class="painel-topo">
+          <h2>Movimentações</h2>
+          <select id="filtro" aria-label="Filtrar movimentações">
+            <option value="todas">Todas</option>
+            <option value="receita">Só receitas</option>
+            <option value="despesa">Só despesas</option>
+          </select>
+        </div>
+        <div class="tabela-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Pagamento</th>
+                <th class="dir">Valor</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FAIXA FINAL -->
+      <section class="banner">
+        <div>
+          <h3>Pequenos passos, grandes resultados! 🚀</h3>
+          <p id="banner-texto"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- JANELA: NOVA MOVIMENTAÇÃO -->
+  <dialog id="dialogo">
+    <form id="form-movimentacao">
+      <h2>Nova movimentação</h2>
+      <div class="campos">
+        <label>Descrição
+          <input type="text" id="descricao" placeholder="Ex.: Supermercado" required>
+        </label>
+
+        <div class="linha">
+          <label>Valor (R$)
+            <input type="number" id="valor" placeholder="0,00" step="0.01" min="0.01" required>
+          </label>
+          <label>Data
+            <input type="date" id="data" required>
+          </label>
+        </div>
+
+        <div class="linha">
+          <label>Tipo
+            <select id="tipo">
+              <option value="despesa">Despesa</option>
+              <option value="receita">Receita</option>
+            </select>
+          </label>
+          <label>Categoria
+            <select id="categoria"></select>
+          </label>
+        </div>
+
+        <label>Forma de pagamento
+          <select id="pagamento">
+            <option>Cartão de crédito</option>
+            <option>Cartão de débito</option>
+            <option>Pix</option>
+            <option>Dinheiro</option>
+            <option>Transferência</option>
+            <option>Outro</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="acoes-dialogo">
+        <button type="button" class="btn secundario" id="cancelar">Cancelar</button>
+        <button type="submit" class="btn primario">Adicionar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
